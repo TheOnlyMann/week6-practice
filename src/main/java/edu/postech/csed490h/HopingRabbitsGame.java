@@ -95,7 +95,7 @@ public class HopingRabbitsGame {
                 return true;
             }
             movableRabbitPosition = currentGameState.indexOf("xo_");
-            if (tryUpdatingRabbitPosition(rabbit, movableRabbitPosition, movableRabbitPosition + 1)) {
+            if (tryUpdatingRabbitPosition(rabbit, movableRabbitPosition, movableRabbitPosition + 2)) {
                 return true;
             }
         } else {
@@ -104,7 +104,7 @@ public class HopingRabbitsGame {
                 return true;
             }
             movableRabbitPosition = currentGameState.indexOf("_xo");
-            if (tryUpdatingRabbitPosition(rabbit, movableRabbitPosition + 1, movableRabbitPosition)) {
+            if (tryUpdatingRabbitPosition(rabbit, movableRabbitPosition + 2, movableRabbitPosition)) {
                 return true;
             }
         }
