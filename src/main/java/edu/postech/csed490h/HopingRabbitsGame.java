@@ -140,9 +140,19 @@ public class HopingRabbitsGame {
      * @return true if the game is stuck, false otherwise
      */
     boolean isStuck() {
-        if(move(Rabbit.X) || move(Rabbit.O)){
-            return false;
-        }
+        int movableRabbitPosition = -1;
+        String currentGameState = this.getState();
+
+        // Check if rabbit can advance (empty position in front of x or o)
+        // And if rabbit can advance, advance and update game state
+        movableRabbitPosition = currentGameState.indexOf("x_");
+        if (isValidPosition(movableRabbitPosition)) {return false;}
+        movableRabbitPosition = currentGameState.indexOf("xo_");
+        if (isValidPosition(movableRabbitPosition)) {return false;}
+        movableRabbitPosition = currentGameState.indexOf("_o");
+        if (isValidPosition(movableRabbitPosition)) {return false;}
+        movableRabbitPosition = currentGameState.indexOf("_xo");
+        if (isValidPosition(movableRabbitPosition)) {return false;}
         return true;
     }
 
