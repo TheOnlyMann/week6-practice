@@ -39,6 +39,7 @@ public class HopingRabbitsGame {
             // o team occupies the last N positions
             gameState[(numPositionInGame - 1) - position] = Rabbit.O;
         }
+        gameState[numRabbitsOnEachTeam] = null;
     }
 
     /**
@@ -64,7 +65,7 @@ public class HopingRabbitsGame {
      * @return true if the rabbit can move, false otherwise
      */
     private boolean tryUpdatingRabbitPosition(Rabbit rabbit, int originalPosition, int newPosition) {
-        if (isValidPosition(originalPosition) && isValidPosition((newPosition))) {
+        if (isValidPosition(originalPosition) && gameState[originalPosition] == rabbit && isValidPosition((newPosition))&&gameState[newPosition] == null) {
             gameState[originalPosition] = null; // original position is now empty
             gameState[newPosition] = rabbit;
             return true;
@@ -93,8 +94,16 @@ public class HopingRabbitsGame {
             if (tryUpdatingRabbitPosition(rabbit, movableRabbitPosition, movableRabbitPosition + 1)) {
                 return true;
             }
+            movableRabbitPosition = currentGameState.indexOf("xo_");
+            if (tryUpdatingRabbitPosition(rabbit, movableRabbitPosition, movableRabbitPosition + 1)) {
+                return true;
+            }
         } else {
             movableRabbitPosition = currentGameState.indexOf("_o");
+            if (tryUpdatingRabbitPosition(rabbit, movableRabbitPosition + 1, movableRabbitPosition)) {
+                return true;
+            }
+            movableRabbitPosition = currentGameState.indexOf("_xo");
             if (tryUpdatingRabbitPosition(rabbit, movableRabbitPosition + 1, movableRabbitPosition)) {
                 return true;
             }
@@ -121,6 +130,7 @@ public class HopingRabbitsGame {
             // x team should occupy the last N positions
             if (gameState[(numPositionInGame - 1) - position] != Rabbit.X) { return false; }
         }
+        if (gameState[numRabbitsOnEachTeam] != null) { return false; }
         return true;
     }
 
@@ -130,6 +140,14 @@ public class HopingRabbitsGame {
      * @return true if the game is stuck, false otherwise
      */
     boolean isStuck() {
+        Rabbit[] gameStateBackup = new Rabbit[numPositionInGame];
+        for (int position = 0; position < numPositionInGame; position++)
+            gameStateBackup[position] = gameState[position];
+        if(move(Rabbit.X) || move(Rabbit.O)){
+        for (int position = 0; position < numPositionInGame; position++)
+            gameState[position] = gameStateBackup[position];
+            return false;
+        }
         return true;
     }
 
@@ -141,7 +159,12 @@ public class HopingRabbitsGame {
      */
     String getState() {
         StringBuilder state = new StringBuilder();
-
+        for (int position = 0; position < numPositionInGame; position++)
+        {
+            if(gameState[position]==Rabbit.X)state.append('x');
+            else if(gameState[position]==Rabbit.O)state.append('o');
+            else state.append('_');
+        }
         return state.toString();
     }
 
