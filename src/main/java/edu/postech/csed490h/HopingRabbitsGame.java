@@ -65,7 +65,7 @@ public class HopingRabbitsGame {
      * @return true if the rabbit can move, false otherwise
      */
     private boolean tryUpdatingRabbitPosition(Rabbit rabbit, int originalPosition, int newPosition) {
-        if (isValidPosition(originalPosition) && gameState[originalPosition] == rabbit && isValidPosition((newPosition))&&gameState[newPosition] == null) {
+        if (isValidPosition(originalPosition) && isValidPosition((newPosition))) {
             gameState[originalPosition] = null; // original position is now empty
             gameState[newPosition] = rabbit;
             return true;
@@ -140,12 +140,7 @@ public class HopingRabbitsGame {
      * @return true if the game is stuck, false otherwise
      */
     boolean isStuck() {
-        Rabbit[] gameStateBackup = new Rabbit[numPositionInGame];
-        for (int position = 0; position < numPositionInGame; position++)
-            gameStateBackup[position] = gameState[position];
         if(move(Rabbit.X) || move(Rabbit.O)){
-        for (int position = 0; position < numPositionInGame; position++)
-            gameState[position] = gameStateBackup[position];
             return false;
         }
         return true;
